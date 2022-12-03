@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 file = File.open('inputs/input_day02.txt')
-file_array = file.read.split('\n')
+file_array = file.read.split("\n")
 
 scores_part1 = {
   'A' => {
@@ -37,12 +39,11 @@ scores_part2 = {
   }
 }
 
-results_part1 = file_array.map(&:split).map do |k, v|
-  scores_part1[k][v]
+def compute_score(input, dic)
+  input.map(&:split).map do |k, v|
+    dic[k][v]
+  end.sum
 end
-p results_part1.sum
 
-results_part2 = file_array.map(&:split).map do |k, v|
-  scores_part2[k][v]
-end
-p results_part2.sum
+p "part1: #{compute_score(file_array, scores_part1)}"
+p "part2: #{compute_score(file_array, scores_part2)}"
