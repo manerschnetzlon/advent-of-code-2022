@@ -36,16 +36,16 @@ def ground(structure)
   structure.max { |a, b| a[1] <=> b[1] }[1]
 end
 
-def can_down(sand, structure)
-  !structure.include?([sand[0], sand[1] + 1])
+def can_down(sand, structure, ground)
+  !structure.include?([sand[0], sand[1] + 1]) && sand[1] + 1 < ground
 end
 
-def can_down_left(sand, structure)
-  !structure.include?([sand[0] - 1, sand[1] + 1])
+def can_down_left(sand, structure, ground)
+  !structure.include?([sand[0] - 1, sand[1] + 1]) && sand[1] + 1 < ground
 end
 
-def can_down_right(sand, structure)
-  !structure.include?([sand[0] + 1, sand[1] + 1])
+def can_down_right(sand, structure, ground)
+  !structure.include?([sand[0] + 1, sand[1] + 1]) && sand[1] + 1 < ground
 end
 
 # def down(sand, structure)
@@ -65,34 +65,32 @@ end
 # end
 
 def pouring_sand(structure)
-  ground = ground(structure)
+  # ground = ground(structure) #part1
+  ground = ground(structure) + 2 #part2
 
   i = 0
   loop do
     sand = [500, 0]
     loop do
-      if can_down(sand, structure)
+      if can_down(sand, structure, ground)
         sand[1] += 1
-      elsif can_down_left(sand, structure)
+      elsif can_down_left(sand, structure, ground)
         sand[0] -= 1
         sand[1] += 1
-      elsif can_down_right(sand, structure)
+      elsif can_down_right(sand, structure, ground)
         sand[0] += 1
         sand[1] += 1
       else
         structure << sand
         break
       end
-
-      break if sand[1] > ground
     end
-    break if sand[1] > ground
-
     i += 1
+
+    break if sand == [500, 0]
   end
-  # p structure
-  p i
+  i
 end
 
 structure = structure(file_array)
-pouring_sand(structure)
+p "part2: #{pouring_sand(structure)}"
